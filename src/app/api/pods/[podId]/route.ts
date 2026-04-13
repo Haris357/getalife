@@ -47,17 +47,14 @@ export async function GET(
     return NextResponse.json({ error: membersError.message }, { status: 500 })
   }
 
-  const members = (memberRows ?? []).map((row: {
-    user_id: string
-    joined_at: string
-    profiles: { display_name: string | null; avatar_url: string | null; level: number | null; title: string | null } | null
-  }) => ({
-    user_id: row.user_id,
-    display_name: row.profiles?.display_name ?? null,
-    avatar_url: row.profiles?.avatar_url ?? null,
-    level: row.profiles?.level ?? null,
-    title: row.profiles?.title ?? null,
-    joined_at: row.joined_at,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const members = (memberRows ?? []).map((row: any) => ({
+    user_id: row.user_id as string,
+    display_name: (Array.isArray(row.profiles) ? row.profiles[0] : row.profiles)?.display_name ?? null,
+    avatar_url: (Array.isArray(row.profiles) ? row.profiles[0] : row.profiles)?.avatar_url ?? null,
+    level: (Array.isArray(row.profiles) ? row.profiles[0] : row.profiles)?.level ?? null,
+    title: (Array.isArray(row.profiles) ? row.profiles[0] : row.profiles)?.title ?? null,
+    joined_at: row.joined_at as string,
   }))
 
   return NextResponse.json({ pod, members })

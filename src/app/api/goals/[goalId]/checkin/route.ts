@@ -340,8 +340,8 @@ export async function POST(
       const displayName = (profile as { display_name?: string | null }).display_name ?? null
       const goalSnippet = goal.description.slice(0, 80)
 
-      // Always insert a checkin row into activity_feed
-      admin.from('activity_feed').insert({
+      // Always insert a checkin row into activity_feed (fire-and-forget)
+      void admin.from('activity_feed').insert({
         user_id: user.id,
         type: 'checkin',
         goal_id: params.goalId,
@@ -350,7 +350,7 @@ export async function POST(
         streak: newStreak,
         day_number: daysSinceStart + 1,
         is_anonymous: false,
-      }).then(() => {}).catch(() => {})
+      })
 
       // Milestone logic
       if (MILESTONE_STREAKS.includes(newStreak)) {
@@ -364,24 +364,24 @@ export async function POST(
           .maybeSingle()
 
         if (!existing) {
-          // Insert milestone record
-          admin.from('milestones').insert({
+          // Insert milestone record (fire-and-forget)
+          void admin.from('milestones').insert({
             user_id: user.id,
             goal_id: params.goalId,
             type: milestoneType,
             streak_count: newStreak,
-          }).then(() => {}).catch(() => {})
+          })
 
           // Milestone notification
-          admin.from('notifications').insert({
+          void admin.from('notifications').insert({
             user_id: user.id,
             type: `milestone_${newStreak}`,
             actor_name: `${newStreak}-day milestone reached — incredible consistency!`,
             read: false,
-          }).then(() => {}).catch(() => {})
+          })
 
           // Milestone activity_feed row
-          admin.from('activity_feed').insert({
+          void admin.from('activity_feed').insert({
             user_id: user.id,
             type: 'milestone',
             goal_id: params.goalId,
@@ -390,7 +390,7 @@ export async function POST(
             streak: newStreak,
             day_number: daysSinceStart + 1,
             is_anonymous: false,
-          }).then(() => {}).catch(() => {})
+          })
         }
       }
     } catch {/* fire-and-forget — ignore errors */}

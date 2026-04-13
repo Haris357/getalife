@@ -44,18 +44,18 @@ export default async function PodDetailPage({
     .eq('pod_id', podId)
     .order('joined_at', { ascending: true })
 
-  const members: PodMember[] = (memberRows ?? []).map((row: {
-    user_id: string
-    joined_at: string
-    profiles: { display_name: string | null; avatar_url: string | null; level: number | null; title: string | null } | null
-  }) => ({
-    user_id: row.user_id,
-    display_name: row.profiles?.display_name ?? null,
-    avatar_url: row.profiles?.avatar_url ?? null,
-    level: row.profiles?.level ?? null,
-    title: row.profiles?.title ?? null,
-    joined_at: row.joined_at,
-  }))
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const members: PodMember[] = (memberRows ?? []).map((row: any) => {
+    const p = Array.isArray(row.profiles) ? row.profiles[0] : row.profiles
+    return {
+      user_id: row.user_id as string,
+      display_name: p?.display_name ?? null,
+      avatar_url: p?.avatar_url ?? null,
+      level: p?.level ?? null,
+      title: p?.title ?? null,
+      joined_at: row.joined_at as string,
+    }
+  })
 
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'background.body' }}>
