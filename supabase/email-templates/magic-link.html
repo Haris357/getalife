@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>get a life</title>
+</head>
+<body style="margin:0;padding:0;background:#ffffff;-webkit-font-smoothing:antialiased;">
+  <div style="max-width:520px;margin:0 auto;padding:48px 24px 64px;font-family:Georgia,'Times New Roman',serif;color:#111111;">
+
+    <p style="margin:0 0 40px;font-size:11px;color:#999;letter-spacing:0.12em;text-transform:uppercase;font-family:-apple-system,sans-serif;">
+      get a life
+    </p>
+
+    <div style="font-size:16px;line-height:1.85;color:#111;">
+      <p style="margin:0 0 16px;font-size:22px;font-weight:bold;font-family:-apple-system,sans-serif;letter-spacing:-0.5px;">here's your link.</p>
+      <p style="margin:0 0 16px;">you asked to sign in to get a life. click the button below — it expires in 1 hour.</p>
+      <p style="margin:0 0 16px;color:#555;font-size:14px;">if you didn't request this, ignore it. someone probably mistyped their email.</p>
+    </div>
+
+    <p style="margin:32px 0 0;">
+      <a href="{{ .ConfirmationURL }}" style="display:inline-block;padding:13px 28px;background:#111;color:#fff;text-decoration:none;font-size:13px;font-family:-apple-system,sans-serif;letter-spacing:0.02em;border-radius:4px;">sign in →</a>
+    </p>
+
+    <p style="margin:20px 0 0;">
+      <a href="{{ .ConfirmationURL }}" style="font-size:11px;color:#bbb;font-family:-apple-system,sans-serif;word-break:break-all;">{{ .ConfirmationURL }}</a>
+    </p>
+
+    <div style="margin-top:48px;padding-top:20px;border-top:1px solid #e8e8e8;">
+      <p style="margin:0 0 28px;font-size:14px;color:#555;font-family:-apple-system,sans-serif;line-height:1.6;border-left:2px solid #e8e8e8;padding-left:14px;">
+        Hi — I'm Haris, founder of Get A Life. I built this because I was tired of starting things and never finishing them. Good to have you here.
+      </p>
+      <p style="margin:12px 0 0;font-size:11px;color:#bbb;font-family:-apple-system,sans-serif;line-height:1.6;">
+        this email was sent because someone requested a sign-in link for this address. if that wasn't you, you can safely ignore this.
+      </p>
+    </div>
+
+  </div>
+</body>
+</html>

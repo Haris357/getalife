@@ -1,0 +1,13 @@
+{
+  "name": "GetALife — Accountability App",
+  "short_name": "GetALife",
+  "description": "Track your goals, build habits, stay accountable.",
+  "start_url": "/dashboard",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#0a0a0a",
+  "orientation": "portrait-primary",
+  "icons": [],
+  "categories": ["productivity", "health", "lifestyle"],
+  "screenshots": []
+}

@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GetALife</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      background: #0a0a0a;
+      color: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .bg-gradient {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(14,165,233,0.04) 0%, rgba(249,115,22,0.03) 100%);
+      pointer-events: none;
+    }
+
+    /* ── COUNTDOWN VIEW ── */
+    #countdown-view {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      width: 100%;
+      padding: 40px 32px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .wordmark {
+      position: fixed;
+      top: 24px;
+      left: 32px;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: rgba(255,255,255,0.25);
+    }
+
+    .settings-btn {
+      position: fixed;
+      top: 18px;
+      right: 28px;
+      background: none;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 20px;
+      padding: 6px 14px;
+      color: rgba(255,255,255,0.35);
+      font-size: 12px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .settings-btn:hover { border-color: rgba(255,255,255,0.3); color: rgba(255,255,255,0.6); }
+
+    .streak-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 18px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 36px;
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #fff;
+    }
+    .streak-badge.hot { background: linear-gradient(135deg, rgb(14,165,233) 0%, rgb(249,115,22) 100%); border: none; }
+
+    .big-number {
+      font-size: clamp(5rem, 15vw, 14rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 0.9;
+      background: linear-gradient(135deg, rgb(14,165,233) 0%, rgb(249,115,22) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 8px;
+    }
+
+    .big-label {
+      font-size: 12px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      font-weight: 500;
+      margin-bottom: 40px;
+    }
+
+    .goal-desc {
+      font-size: clamp(14px, 2vw, 20px);
+      color: rgba(255,255,255,0.6);
+      line-height: 1.5;
+      max-width: 560px;
+      font-weight: 400;
+      margin-bottom: 20px;
+    }
+
+    /* live time ticker */
+    .time-ticker {
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      color: rgba(255,255,255,0.2);
+      font-variant-numeric: tabular-nums;
+      margin-bottom: 40px;
+    }
+
+    /* progress bar */
+    .progress-wrap {
+      width: 100%;
+      max-width: 480px;
+    }
+    .progress-stats {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .progress-stat {
+      font-size: 11px;
+      color: rgba(255,255,255,0.25);
+      letter-spacing: 0.06em;
+    }
+    .progress-track {
+      width: 100%;
+      height: 4px;
+      border-radius: 2px;
+      background: rgba(255,255,255,0.07);
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      border-radius: 2px;
+      background: linear-gradient(90deg, rgb(14,165,233) 0%, rgb(249,115,22) 100%);
+      transition: width 0.6s ease;
+    }
+
+    /* ── SETUP VIEW ── */
+    #setup-view {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      max-width: 480px;
+      width: 100%;
+      padding: 40px 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .setup-logo {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      background: linear-gradient(135deg, rgb(14,165,233) 0%, rgb(249,115,22) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 24px;
+    }
+
+    .setup-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.9);
+      margin-bottom: 10px;
+      letter-spacing: -0.02em;
+    }
+
+    .setup-sub {
+      font-size: 13px;
+      color: rgba(255,255,255,0.35);
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+
+    .setup-steps {
+      text-align: left;
+      width: 100%;
+      margin-bottom: 32px;
+    }
+
+    .step {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 16px;
+      align-items: flex-start;
+    }
+
+    .step-num {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.4);
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .step-text {
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.5;
+    }
+
+    .step-text b {
+      color: rgba(255,255,255,0.8);
+      font-weight: 600;
+    }
+
+    .url-input {
+      width: 100%;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 10px;
+      padding: 14px 16px;
+      color: #fff;
+      font-size: 14px;
+      font-family: inherit;
+      outline: none;
+      margin-bottom: 12px;
+      transition: border-color 0.15s;
+    }
+    .url-input::placeholder { color: rgba(255,255,255,0.25); }
+    .url-input:focus { border-color: rgba(14,165,233,0.5); }
+
+    .error-msg {
+      font-size: 12px;
+      color: #f87171;
+      margin-bottom: 12px;
+      text-align: left;
+      width: 100%;
+    }
+
+    .save-btn {
+      width: 100%;
+      padding: 14px;
+      border-radius: 10px;
+      border: none;
+      background: linear-gradient(135deg, rgb(14,165,233) 0%, rgb(249,115,22) 100%);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      transition: opacity 0.15s;
+    }
+    .save-btn:hover { opacity: 0.9; }
+    .save-btn:disabled { opacity: 0.5; cursor: default; }
+
+    /* ── ERROR VIEW ── */
+    #error-view {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .retry-btn {
+      margin-top: 16px;
+      background: none;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 20px;
+      padding: 8px 20px;
+      color: rgba(255,255,255,0.45);
+      font-size: 13px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-gradient"></div>
+
+  <!-- Countdown view -->
+  <div id="countdown-view">
+    <div class="wordmark">getalife</div>
+    <button class="settings-btn" id="settings-btn">change goal</button>
+
+    <div id="streak-badge" class="streak-badge" style="display:none"></div>
+    <div class="big-number" id="big-number">—</div>
+    <div class="big-label" id="big-label">days in</div>
+    <div class="goal-desc" id="goal-desc"></div>
+    <div class="time-ticker" id="time-ticker"></div>
+
+    <div class="progress-wrap" id="progress-wrap" style="display:none">
+      <div class="progress-stats">
+        <span class="progress-stat" id="stat-day"></span>
+        <span class="progress-stat" id="stat-pct"></span>
+        <span class="progress-stat" id="stat-total"></span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Setup view -->
+  <div id="setup-view">
+    <div class="setup-logo">getalife</div>
+    <div class="setup-title">connect your goal</div>
+    <div class="setup-sub">
+      paste the URL from your GetALife countdown page — every new tab will show your live progress.
+    </div>
+
+    <div class="setup-steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-text">open <b>getalife.app</b> → your goal → click <b>wallpaper →</b></div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-text">copy the URL from the countdown page (looks like <b>/countdown/abc123</b>)</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-text">paste it below and click save</div>
+      </div>
+    </div>
+
+    <input
+      class="url-input"
+      id="url-input"
+      type="url"
+      placeholder="https://getalife.app/countdown/your-goal-id"
+      autocomplete="off"
+      spellcheck="false"
+    />
+    <div class="error-msg" id="error-msg" style="display:none"></div>
+    <button class="save-btn" id="save-btn">save & start countdown</button>
+  </div>
+
+  <!-- Error view -->
+  <div id="error-view">
+    <div style="font-size:14px; color:rgba(255,255,255,0.3)">couldn't load your goal</div>
+    <button class="retry-btn" id="retry-btn">try again</button>
+    <button class="retry-btn" id="reset-btn" style="margin-top:8px">change goal</button>
+  </div>
+
+  <script src="newtab.js"></script>
+</body>
+</html>

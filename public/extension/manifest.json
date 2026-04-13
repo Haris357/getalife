@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "GetALife — Goal Countdown",
+  "description": "See your live goal countdown every time you open a new tab.",
+  "version": "1.0.0",
+  "chrome_url_overrides": {
+    "newtab": "newtab.html"
+  },
+  "permissions": ["storage"],
+  "host_permissions": ["<all_urls>"],
+  "icons": {
+    "16":  "icon.png",
+    "48":  "icon.png",
+    "128": "icon.png"
+  }
+}
