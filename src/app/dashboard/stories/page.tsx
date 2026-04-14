@@ -56,23 +56,7 @@ export default async function MyStoriesPage() {
             </Typography>
           </Box>
 
-          <Link href="/dashboard/stories/new" style={{ textDecoration: 'none' }}>
-            <Box
-              sx={{
-                px: 3,
-                py: 1,
-                borderRadius: '20px',
-                background: 'linear-gradient(135deg, rgb(14,165,233) 0%, rgb(249,115,22) 100%)',
-                cursor: 'pointer',
-                transition: 'opacity 0.15s',
-                '&:hover': { opacity: 0.88 },
-              }}
-            >
-              <Typography level="body-xs" sx={{ color: '#fff', fontWeight: 700, fontSize: '0.82rem' }}>
-                + write new story
-              </Typography>
-            </Box>
-          </Link>
+          
         </Box>
 
         {/* Empty state */}
