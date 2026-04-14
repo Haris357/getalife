@@ -25,7 +25,7 @@ const PRIMARY_NAV = [
   { href: '/community', label: 'community' },
   { href: '/community/challenges', label: 'challenges' },
   { href: '/leaderboard', label: 'leaderboard' },
-  { href: '/stories', label: 'stories' },
+  
 ]
 
 const MORE_NAV = [
