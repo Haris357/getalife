@@ -24,8 +24,7 @@ interface Props {
 const PRIMARY_NAV = [
   { href: '/community', label: 'community' },
   { href: '/community/challenges', label: 'challenges' },
-  { href: '/leaderboard', label: 'leaderboard' },
-  
+  { href: '/leaderboard', label: 'leaderboard' }
 ]
 
 const MORE_NAV = [
