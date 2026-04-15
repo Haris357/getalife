@@ -196,7 +196,7 @@ export default async function LandingPage() {
                       },
                     }}
                   >
-                    go to dashboard →
+                    dashboard
                   </Box>
                 </Link>
                 <Typography level="body-xs" sx={{ color: 'text.tertiary', opacity: 0.4, mt: 2, fontSize: '0.78rem' }}>
