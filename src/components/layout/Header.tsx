@@ -33,7 +33,6 @@ const MORE_NAV = [
   { href: '/dashboard/buddies', label: 'buddies' },
   { href: '/dashboard/pods', label: 'pods' },
   { href: '/dashboard/coach', label: 'coach' },
-  { href: '/dashboard/stories', label: 'my stories' },
   { href: '/dashboard/profile', label: 'profile & rank' },
   { href: '/dashboard/settings', label: 'settings' },
 ]
