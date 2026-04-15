@@ -34,6 +34,8 @@ export default function GradientButton({
   size = 'md',
   sx,
 }: Props) {
+  // Note: Spinner and loading state are already supported. Ensure the parent component sets loading to true while navigation occurs.
+
   const sz = sizeMap[size]
   const isDisabled = disabled || loading
 
